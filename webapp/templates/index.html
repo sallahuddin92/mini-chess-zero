@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini-Chess Zero | AI Chess Game</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 Mini-Chess Zero</h1>
+            <p class="subtitle">Play against an AI trained with Asymmetric TD Learning</p>
+        </header>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen">
+            <div class="card">
+                <h2>New Game</h2>
+                
+                <div class="option-group">
+                    <label>Difficulty</label>
+                    <div class="button-group" id="difficulty-select">
+                        <button data-value="beginner">Beginner</button>
+                        <button data-value="intermediate" class="active">Intermediate</button>
+                        <button data-value="advanced">Advanced</button>
+                        <button data-value="expert">Expert</button>
+                    </div>
+                </div>
+                
+                <div class="option-group">
+                    <label>Play as</label>
+                    <div class="button-group" id="color-select">
+                        <button data-value="white" class="active">⬜ White</button>
+                        <button data-value="black">⬛ Black</button>
+                    </div>
+                </div>
+                
+                <button id="start-btn" class="primary-btn">Start Game</button>
+            </div>
+            
+            <div class="stats-card">
+                <h3>AI Stats</h3>
+                <div class="stat-item">
+                    <span class="stat-label">Training Games</span>
+                    <span class="stat-value">1,000</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Win Rate</span>
+                    <span class="stat-value">87.5%</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Method</span>
+                    <span class="stat-value">Asymmetric TD</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen hidden">
+            <div class="game-layout">
+                <div class="board-container">
+                    <div class="board" id="chess-board"></div>
+                    <div class="board-labels">
+                        <div class="col-labels">
+                            <span>a</span><span>b</span><span>c</span><span>d</span><span>e</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="game-info">
+                    <div class="turn-indicator" id="turn-indicator">
+                        Your Turn
+                    </div>
+                    
+                    <div class="move-history" id="move-history">
+                        <h3>Moves</h3>
+                        <div class="moves-list" id="moves-list"></div>
+                    </div>
+                    
+                    <div class="controls">
+                        <button id="new-game-btn" class="secondary-btn">New Game</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="game-over-modal" class="modal hidden">
+                <div class="modal-content">
+                    <h2 id="result-text">Game Over</h2>
+                    <button id="play-again-btn" class="primary-btn">Play Again</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/game.js"></script>
+</body>
+</html>

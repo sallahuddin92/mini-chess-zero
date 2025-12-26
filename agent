@@ -1,0 +1,68 @@
+import os
+import torch
+import chess
+from src.chess_env import ChessEnv
+from src.train_dqn_chess import DQN, move_to_index, index_to_move
+
+# Settings
+DATA_DIR = "data"
+MODEL_DIR = "models"
+MODEL_FILE = os.path.join(MODEL_DIR, "dqn_chess.pth")
+NUM_GAMES = 50  # Number of self-play games to evaluate
+
+# Device
+device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+print(f"Using device: {device}")
+
+# Load environment
+env = ChessEnv()
+input_dim = len(env.get_state())
+output_dim = 64*64
+
+# Load model
+policy_net = DQN(input_dim, output_dim).to(device)
+if os.path.exists(MODEL_FILE):
+    policy_net.load_state_dict(torch.load(MODEL_FILE, map_location=device))
+    policy_net.eval()
+    print("[loaded] Existing model checkpoint")
+
+def select_action_eval(state, env, policy_net):
+    legal = env.legal_moves()
+    state_tensor = torch.FloatTensor(state).unsqueeze(0).to(device)
+    with torch.no_grad():
+        q_values = policy_net(state_tensor)
+    q_map = {move: q_values[0, move_to_index(move)].item() for move in legal}
+    best_move = max(q_map, key=q_map.get)
+    return best_move
+
+# Evaluation loop
+results = {"white_win":0, "black_win":0, "draw":0, "avg_moves":0}
+
+for game in range(1, NUM_GAMES+1):
+    state = env.reset()
+    done = False
+    move_count = 0
+    while not done:
+        move = select_action_eval(state, env, policy_net)
+        next_state, reward, done = env.step(move)
+        state = next_state
+        move_count += 1
+
+    if reward == 1:   # White win
+        results["white_win"] += 1
+    elif reward == -1:  # Black win
+        results["black_win"] += 1
+    else:
+        results["draw"] += 1
+    results["avg_moves"] += move_count
+
+    print(f"[game {game}] Moves: {move_count} | Result: {'White' if reward==1 else 'Black' if reward==-1 else 'Draw'}")
+
+# Average moves
+results["avg_moves"] /= NUM_GAMES
+print("\n=== Evaluation Summary ===")
+print(f"White wins: {results['white_win']}")
+print(f"Black wins: {results['black_win']}")
+print(f"Draws: {results['draw']}")
+print(f"Average moves per game: {results['avg_moves']}")
+
