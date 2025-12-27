@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "asymmetric-td"
-version = "0.1.0"
+version = "0.1.1"
 description = "Asymmetric Temporal Difference Learning for stable deep RL"
 readme = "README.md"
 license = {text = "MIT"}
@@ -51,9 +51,11 @@ examples = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/mini-chess-zero/asymmetric-td"
-Documentation = "https://github.com/mini-chess-zero/asymmetric-td#readme"
-Repository = "https://github.com/mini-chess-zero/asymmetric-td"
+Homepage = "https://github.com/sallahuddin92/mini-chess-zero"
+Documentation = "https://github.com/sallahuddin92/mini-chess-zero/blob/main/docs/walkthrough.md"
+Repository = "https://github.com/sallahuddin92/mini-chess-zero"
+"Bug Tracker" = "https://github.com/sallahuddin92/mini-chess-zero/issues"
+Changelog = "https://github.com/sallahuddin92/mini-chess-zero/releases"
 
 [tool.setuptools.packages.find]
 include = ["asymmetric_td*"]

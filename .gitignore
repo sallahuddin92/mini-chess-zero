@@ -89,3 +89,6 @@ data/
 !research/figures/*.png
 !models/*.png
 !trading/*.png
+
+# Allow trading data
+!trading/data/*.csv
